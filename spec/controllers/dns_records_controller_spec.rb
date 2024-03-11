@@ -349,6 +349,53 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
   end
 
   describe '#create' do
-    # TODO
+    context 'with valid params' do
+      let(:params) do
+        {
+          dns_records: {
+            ip: '6.6.6.6',
+            hostnames_attributes: [
+              {
+                hostname: 'lorem.com'
+              },
+              {
+                hostname: 'ipsum.com'
+              },
+              {
+                hostname: 'dolor.com'
+              }
+            ]
+          }
+        }
+
+      end
+
+      it 'create a new dns record' do
+        post(:create, params: params, format: :json)
+
+        expect(response).to have_http_status(:created)
+        expect(parsed_body[:id]).to be_present
+      end
+
+      it 'create the hostnames' do
+        expect { post(:create, params: params, format: :json) }.to change(Hostname, :count).by(3)
+      end
+    end
+
+    context 'with invalid params' do
+      let(:params) do
+        {
+          dns_records: {
+            ip: nil
+          }
+        }
+      end
+
+      it 'responds with unprocessable entity status' do
+        post(:create, params: params, format: :json)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
   end
 end
