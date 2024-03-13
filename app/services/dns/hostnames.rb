@@ -32,7 +32,7 @@ class Dns::Hostnames
   end
 
   def grouped_hostnames
-    hostnames.inject(Hash.new(0)) { |h, e| h[e.hostname] += 1 ; h }
+    hostnames.inject(Hash.new(0)) { |hash, hostname| hash[hostname.hostname] += 1 ; hash }
   end
 
   def build_hostnames_response
