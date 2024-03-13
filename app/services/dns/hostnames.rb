@@ -12,8 +12,8 @@ class Dns::Hostnames
   end
 
   def call
-    return { } if dns.empty?
-    
+    return {} if dns.empty?
+
     hostname_array = build_hostnames_response
     dns_array = build_dns_response
 
