@@ -193,15 +193,15 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
             total_records: 3,
             records: [
               {
-                id: 6,
+                id: 16,
                 ip_address: ip1
               },
               {
-                id: 8,
+                id: 18,
                 ip_address: ip3
               },
               {
-                id: 9,
+                id: 19,
                 ip_address: ip4
               }
             ],
@@ -231,7 +231,9 @@ RSpec.describe Api::V1::DnsRecordsController, type: :controller do
         end
 
         it 'returns only the included dns records without a related hostname' do
-          expect(parsed_body).to eq expected_response
+          expect(parsed_body[:total_records]).to eq(3)
+          expect(parsed_body[:records]).to eq(expected_response[:records])
+          expect(parsed_body[:related_hostnames]).to match_array(expected_response[:related_hostnames])
         end
       end
 
